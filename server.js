@@ -11,11 +11,13 @@ app.use(bodyParser.json()); // menagkap url dalam bentuk json
 
 app.get('/',(req, res) => res.send('Hello World'))
 //membuat request post
+//nama request firstname,lastname
 app.post('/hello', function(req,res){
     const respon = {
         statusCode: 200,
         error:"",
-        message: "Hello json"
+        message: "Hello json",
+        content: req.body
     }
     res.json(respon);
 })
