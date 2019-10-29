@@ -94,9 +94,17 @@ app.put('/profile/update/:id', async (req, res)=>{
 //delete data method get
 //url : http://localhost:3000/profile/delete/id
 app.get('/profile/delete/:id', async (req,res) => {
+    const checkId = Mongoose.Types.ObjectId.isValid(req.params.id) //check data object id validjika valid lakukan eksekusi
     let statusCode = 200
     let message = "Delete Person"
-    var person = await PersonModel.findByIdAndDelete(req.params.id).exec();
+    if(checkId){ //jika id valid delete data
+        var person = await PersonModel.findByIdAndDelete(req.params.id).exec();
+    }else{
+        statusCode = 404
+        message = "Object Id Invalid"
+        var person = null
+    }
+    // var person = await PersonModel.findByIdAndDelete(req.params.id).exec();
     const response = {
         statusCode: statusCode,
         error: message,
@@ -105,6 +113,8 @@ app.get('/profile/delete/:id', async (req,res) => {
     }
     res.status(statusCode).json(response);
 })
+
+
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!` ))
 
